@@ -1,5 +1,5 @@
 {
-  "name": "@locmod/event-aggregator",
+  "name": "@locmod/active-transactions",
   "version": "1.0.0",
   "module": "dist/index.es.js",
   "main": "lib/index.js",
