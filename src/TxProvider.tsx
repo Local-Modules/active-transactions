@@ -1,12 +1,8 @@
 import { useTransactionsState } from './useTransactionsState'
-import { createContext } from 'react'
+import React, { FC, createContext } from 'react'
 import type { Tx, ActionsState } from './types'
 
-
-export const StateContext = createContext<Tx[]>(null)
-export const ActionsContext = createContext<ActionsState>(null)
-
-export const TxContext = ({ children, state, actions }) => (
+export const TxContext: FC<{ state: Tx[], actions: ActionsState }> = ({ children, state, actions }) => (
   <StateContext.Provider value={state}>
     <ActionsContext.Provider value={actions}>
       {children}
@@ -14,7 +10,7 @@ export const TxContext = ({ children, state, actions }) => (
   </StateContext.Provider>
 )
 
-export default ({ children }) => {
+const Wrapper: FC = ({ children }) => {
   const [ state, actions ] = useTransactionsState()
 
   return (
@@ -23,3 +19,8 @@ export default ({ children }) => {
     </TxContext>
   )
 }
+
+export const StateContext = createContext<Tx[]>([])
+export const ActionsContext = createContext<ActionsState>(null as unknown as ActionsState)
+
+export default Wrapper
