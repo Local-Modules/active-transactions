@@ -37,6 +37,5 @@ export default {
       rollupCommonJSResolveHack: false,
       clean: true,
     }),
-    // uglify(),
   ],
 }

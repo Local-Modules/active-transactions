@@ -25,36 +25,36 @@ type TxProviderProps = {
 export const TxProvider: React.FC<TxProviderProps> = ({ children }) => {
   const [ transactions, setTransactions ] = useState<Tx[]>([])
 
-  const state: Tx[] = useMemo(() => transactions, [ transactions ])
-
-  const removeTransaction = (hash: string) => {
-    setTransactions(transactions.filter((tx) => tx.hash !== hash))
-  }
-
-  const addTransaction: ActionsState['addTransaction'] = async (name, receipt) => {
-    try {
-      setTransactions((state) => [
-        ...state,
-        {
-          name,
-          receipt,
-          hash: receipt.hash,
-        },
-      ])
-
-      await receipt.wait()
+  const actions: ActionsState = useMemo(() => {
+    const removeTransaction = (hash: string) => {
+      setTransactions(transactions.filter((tx) => tx.hash !== hash))
     }
-    finally {
-      removeTransaction(receipt.hash)
-    }
-  }
 
-  const actions: ActionsState = useMemo(() => ({
-    addTransaction,
-  }), [])
+    const addTransaction: ActionsState['addTransaction'] = async (name, receipt) => {
+      try {
+        setTransactions((state) => [
+          ...state,
+          {
+            name,
+            receipt,
+            hash: receipt.hash,
+          },
+        ])
+
+        await receipt.wait()
+      }
+      finally {
+        removeTransaction(receipt.hash)
+      }
+    }
+
+    return {
+      addTransaction,
+    }
+  }, [])
 
   return (
-    <StateContext.Provider value={state}>
+    <StateContext.Provider value={transactions}>
       <ActionsContext.Provider value={actions}>
         {children}
       </ActionsContext.Provider>
