@@ -10,7 +10,7 @@ import pkg from './package.json'
 // const babelRuntimeVersion = pkg.dependencies['@babel/runtime'].replace(/^[^0-9]*/, '')
 
 export default {
-  input: 'index.ts',
+  input: './src/index.tsx',
   output: [
     {
       file: pkg.main,

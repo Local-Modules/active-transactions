@@ -1,11 +1,10 @@
 {
   "name": "@locmod/active-transactions",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "module": "dist/index.es.js",
   "main": "lib/index.js",
   "types": "./index.d.ts",
   "scripts": {
-    "test": "jest",
     "dev": "rollup -cw",
     "build": "rimraf ./dist && rimraf ./lib && rollup -c --compact",
     "prepublish": "npm run build && npm run test"
