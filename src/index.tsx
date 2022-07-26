@@ -1,11 +1,9 @@
 import React, { createContext, useContext, useState, useMemo } from 'react'
-import type { ContractTransaction } from 'ethers'
+import type { ContractTransaction, Transaction } from 'ethers'
 
 
-type Tx = {
+type Tx = Transaction & {
   name: string
-  hash: string
-  receipt: ContractTransaction
 }
 
 type ActionsState = {
@@ -30,21 +28,14 @@ export const TxProvider: React.FC<TxProviderProps> = ({ children }) => {
       setTransactions(transactions.filter((tx) => tx.hash !== hash))
     }
 
-    const addTransaction: ActionsState['addTransaction'] = async (name, receipt) => {
+    const addTransaction: ActionsState['addTransaction'] = async (name, tx) => {
       try {
-        setTransactions((state) => [
-          ...state,
-          {
-            name,
-            receipt,
-            hash: receipt.hash,
-          },
-        ])
-
-        await receipt.wait()
+        setTransactions((txs) => [ ...txs, { name, ...tx } ])
+        await tx.wait()
       }
+      catch {}
       finally {
-        removeTransaction(receipt.hash)
+        removeTransaction(tx.hash)
       }
     }
 
